@@ -6,7 +6,7 @@ Parse OPJ file into a list of objects
 }
 \description{
 This function parses an Origin(tm) file into a list of objects it consists
-of. For now, only tables are returned as data.frames (or matrices? FIXME).
+of. For now, only spreadsheets are returned as numeric matrices.
 }
 \usage{
 read.opj(file)

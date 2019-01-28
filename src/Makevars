@@ -2,4 +2,4 @@ OBJECTS = \
 	liborigin/OriginFile.o liborigin/OriginParser.o \
 	liborigin/OriginAnyParser.o RcppExports.o read_opj.o
 
-PKG_CPPFLAGS = -I.
+PKG_CPPFLAGS = -I . -I liborigin
