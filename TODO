@@ -1,5 +1,5 @@
-* Run R CMD build to build the package tarball.
-* Run R CMD check to check the package tarball.
+* Specify code owners (Copyright) in DESCRIPTION
+* README
 * Fix the NOTEs:
  - Found object files/libraries: src/liborigin/*.o
    (why don't they get deleted on R CMD build?)
