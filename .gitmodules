@@ -1,3 +1,4 @@
 [submodule "src/liborigin"]
 	path = src/liborigin
-	url = https://git.code.sf.net/p/liborigin/git
+	url = https://github.com/aitap/Ropj.git
+	branch = liborigin

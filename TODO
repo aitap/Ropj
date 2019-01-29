@@ -1,7 +1,2 @@
-* Fix the NOTEs:
- - Compiled code should not call entry points which might terminate R nor
-   write to stdout/stderr instead of to the console, nor the system RNG.
-   ‘liborigin/OriginFile.o’, ‘liborigin/OriginAnyParser.o’: std::cerr
-   ‘liborigin/OriginAnyParser.o’: std::cout
-   (use subtrees instead of submodules and patch the code?)
-
+* Correctly import non-numeric information from spreadsheets
+* Import other kinds of objects
