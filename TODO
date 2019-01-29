@@ -1,10 +1,6 @@
 * Specify code owners (Copyright) in DESCRIPTION
 * README
 * Fix the NOTEs:
- - Found object files/libraries: src/liborigin/*.o
-   (why don't they get deleted on R CMD build?)
- - Found hidden files and directories: src/liborigin/.git
-   (how to get R CMD build to exclude it?)
  - Compiled code should not call entry points which might terminate R nor
    write to stdout/stderr instead of to the console, nor the system RNG.
    ‘liborigin/OriginFile.o’, ‘liborigin/OriginAnyParser.o’: std::cerr
