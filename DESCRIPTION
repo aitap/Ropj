@@ -7,9 +7,10 @@ Author: Ivan Krylov
 Maintainer: Ivan Krylov <krylov.r00t@gmail.com>
 Copyright: Knut Franke, Miquel Garriga, Stefan Gerlach,
 	Alex Kargovsky, Russell Standish, Ion Vasilief
-Description: The package exports one function, read.opj, that
-	produces a list of all objects stored in an OPJ file.
-	No export functionality is planned for now.
+Description: Import an OPJ file as a list of objects of different types.
+	For now, only spreadsheet objects are imported as numeric matrices
+	and no export is planned. More object types may be available to
+	be imported later.
 License: GPL (>= 3)
 Imports: Rcpp (>= 1.0.0)
 LinkingTo: Rcpp
