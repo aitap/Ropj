@@ -1,4 +1,3 @@
-* README
 * Fix the NOTEs:
  - Compiled code should not call entry points which might terminate R nor
    write to stdout/stderr instead of to the console, nor the system RNG.
