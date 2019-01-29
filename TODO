@@ -1,4 +1,3 @@
-* Specify code owners (Copyright) in DESCRIPTION
 * README
 * Fix the NOTEs:
  - Compiled code should not call entry points which might terminate R nor
