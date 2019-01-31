@@ -1,27 +1,10 @@
+#include <algorithm>
 #include <string>
 
 #include <Rcpp.h>
 using namespace Rcpp;
 
 #include "OriginFile.h"
-
-template<int T, typename U> // REALSXP or STRSXP
-struct unlist {
-	static const U NA_value;
-	Vector<T> operator()(const List & list) {
-		// like R unlist, but supplement NULLs with NAs
-		Vector<T> ret(list.size());
-		for (unsigned int i = 0; i < list.size(); i++)
-			ret[i] = Rf_isNull(list[i]) ? NA_value : as<T>(list[i]);
-		return ret;
-	}
-};
-
-template<>
-const decltype(NA_STRING) unlist<STRSXP,decltype(NA_STRING)>::NA_value = NA_STRING;
-
-template<>
-const Vector<REALSXP> unlist<REALSXP,decltype(NA_REAL)>::NA_value = NA_REAL;
 
 // [[Rcpp::export(name="read.opj")]]
 List read_opj(const std::string & file) {
@@ -38,24 +21,43 @@ List read_opj(const std::string & file) {
 		CharacterVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
 
 		for (unsigned int c = 0; c < osp.columns.size(); c++) {
-			names[c] = osp.columns[c].name;
-			comments[c] = osp.columns[c].comment; // user might want to split by \r\n...
-			commands[c] = osp.columns[c].command;
-			List col(osp.maxRows);
-			for (unsigned int row = 0; row < osp.columns[c].data.size(); row++) {
-				Origin::variant & v = osp.columns[c].data[row];
-				if (v.type() == Origin::variant::V_DOUBLE)
-					col[row] = v.as_double();
-				else
-					col[row] = v.as_string();
+			Origin::SpreadColumn & ocol = osp.columns[c];
+			names[c] = ocol.name;
+			comments[c] = ocol.comment; // user might want to split by \r\n...
+			commands[c] = ocol.command;
+			int length = ocol.endRow - ocol.beginRow; // ocol.numRows is a lie?
+			if (
+				std::all_of(
+					ocol.data.begin(), ocol.data.begin() + length,
+					[](const Origin::variant & v){
+						return v.type() == Origin::variant::V_DOUBLE;
+					}
+				)
+			){
+				NumericVector ncol(osp.maxRows, NA_REAL);
+				for (int row = 0; row < length; row++)
+					ncol[ocol.beginRow + row] = ocol.data[row].as_double();
+				rsp[c] = ncol;
+			} else {
+				CharacterVector ccol(osp.maxRows, NA_STRING);
+				for (int row = 0; row < length; row++) {
+					Origin::variant & v = ocol.data[row];
+					if (v.type() == Origin::variant::V_DOUBLE)
+						ccol[ocol.beginRow + row] = std::to_string(v.as_double()); // yuck
+					else
+						ccol[ocol.beginRow + row] = v.as_string();
+				}
+				rsp[c] = ccol;
 			}
-			rsp[c] = Rcpp::Language("unlist", col).eval();
 		}
 
 		rsp.attr("names") = names;
-		rsp.attr("comments") = comments;
-		rsp.attr("commands") = commands;
-		ret[osp.name] = rsp;
+		DataFrame dsp(rsp);
+		// must preserve the attributes - assign them after creating DF
+		dsp.attr("comments") = comments;
+		dsp.attr("commands") = commands;
+		// proxy objects don't seem to have .attr() method
+		ret[osp.name] = dsp;
 	}
 
 	// TODO: matrix, excel, graph, note
