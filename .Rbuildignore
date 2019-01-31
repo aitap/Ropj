@@ -1,5 +1,6 @@
 \.o$
 \.git$
 ^release\.sh$
-src/liborigin/.*\.(txt|in|png|dox)
-src/liborigin/opj2dat.cpp
+^src/liborigin/.*\.(txt|in|png|dox)$
+^src/liborigin/opj2dat.cpp$
+^src/liborigin/doc$
