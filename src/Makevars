@@ -1,3 +1,5 @@
+CXX_STD = CXX11
+
 OBJECTS = \
 	liborigin/OriginFile.o liborigin/OriginParser.o \
 	liborigin/OriginAnyParser.o RcppExports.o read_opj.o
