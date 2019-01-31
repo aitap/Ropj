@@ -6,9 +6,11 @@ files. The only function, `read.opj(file)`, uses [liborigin] to parse the file
 and build a list of its contents. No write support is planned, since it's
 absent in [liborigin].
 
-**FIXME**: For now, only spreadsheets are understood (and are parsed as numeric
-matrices, so any text would be left as `NaN`). Support for more kinds of data is
-planned.
+For now, only spreadsheets are understood and parsed as data frames. Similar
+to the default behaviour of `read.table`, a column containing a single text
+cell would be parsed as text.
+
+Support for more kinds of data is planned.
 
 Submodules
 ----------

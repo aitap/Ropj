@@ -1,14 +1,14 @@
 Package: Ropj
 Type: Package
-Title: Import Origin(R) OPJ Files
+Title: Import Origin(R) 'OPJ' Files
 Version: 0.1
-Date: 2019-01-28
+Date: 2019-02-01
 Author: Ivan Krylov
 Maintainer: Ivan Krylov <krylov.r00t@gmail.com>
 Copyright: Knut Franke, Miquel Garriga, Stefan Gerlach,
 	Alex Kargovsky, Russell Standish, Ion Vasilief
-Description: Import an OPJ file as a list of objects of different types.
-	For now, only spreadsheet objects are imported as numeric matrices
+Description: Import an 'OPJ' file as a list of objects of different types.
+	For now, only spreadsheet objects are imported as data frames
 	and no export is planned. More object types may be available to
 	be imported later.
 License: GPL (>= 3)
