@@ -25,7 +25,7 @@ List read_opj(const std::string & file) {
 			names[c] = ocol.name;
 			comments[c] = ocol.comment; // user might want to split by \r\n...
 			commands[c] = ocol.command;
-			int length = ocol.endRow - ocol.beginRow; // ocol.numRows is a lie?
+			int length = ocol.endRow - ocol.beginRow; // length <= data.size() <= ocol.numRows
 			if (
 				std::all_of(
 					ocol.data.begin(), ocol.data.begin() + length,
