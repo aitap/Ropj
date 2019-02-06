@@ -13,7 +13,7 @@ Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = c(
 	person('Kasper', 'Peeters', email = 'kasper.peeters@aei.mpg.de', role = c('con', 'cph')),
 	person('Russell', 'Standish', role = c('con', 'cph')),
 	person('Ivan', 'Krylov', email = 'krylov.r00t@gmail.com', role = c('cre', 'cph')))
-Description: Read the data from Origin(R) project files (*.opj)
+Description: Read the data from Origin(R) project files ('*.opj')
 	<https://www.originlab.com/doc/User-Guide/Origin-File-Types>.
 	For now, only spreadsheet objects are imported as data frames
 	and no export is planned. More object types may be available to
