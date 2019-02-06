@@ -1,13 +1,20 @@
 Package: Ropj
 Type: Package
-Title: Import Origin(R) 'OPJ' Files
+Title: Import Origin(R) Project Files
 Version: 0.1
 Date: 2019-02-01
-Author: Ivan Krylov
-Maintainer: Ivan Krylov <krylov.r00t@gmail.com>
-Copyright: Knut Franke, Miquel Garriga, Stefan Gerlach,
-	Alex Kargovsky, Russell Standish, Ion Vasilief
-Description: Import an 'OPJ' file as a list of objects of different types.
+Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = c('aut', 'cph')),
+	person('Stefan', 'Gerlach', email = 'stefan.gerlach@uni-konstanz.de', role = c('aut', 'cph')),
+	person('Ion', 'Vasilief', email = 'ion_vasilief@yahoo.fr', role = c('aut', 'cph')),
+	person('Alex', 'Kargovsky', email = 'kargovsky@yumr.phys.msu.su', role = c('aut', 'cph')),
+	person('Knut', 'Franke', email = 'Knut.Franke@gmx.de', role = c('con', 'cph')),
+	person('Alexander', 'Semke', email = 'alexander.semke@web.de', role = c('con', 'cph')),
+	person('Tilman', 'Benkert', email = 'thzs@gmx.net', role = c('con', 'cph')),
+	person('Kasper', 'Peeters', email = 'kasper.peeters@aei.mpg.de', role = c('con', 'cph')),
+	person('Russell', 'Standish', role = c('con', 'cph')),
+	person('Ivan', 'Krylov', email = 'krylov.r00t@gmail.com', role = c('cre', 'cph')))
+Description: Read the data from Origin(R) project files (*.opj)
+	<https://www.originlab.com/doc/User-Guide/Origin-File-Types>.
 	For now, only spreadsheet objects are imported as data frames
 	and no export is planned. More object types may be available to
 	be imported later.
