@@ -20,7 +20,7 @@ read.opj(file)
 
   \itemize{
     \item Spreadsheets are presented as \code{\link{data.frame}}s,
-    each column having additional \code{\link{attributes}}:
+    each having additional \code{\link{attributes}}:
     \itemize{
       \item \code{comments} contains the fields Long name, Units,
       and Comment, joined by \code{\\r\\n}, if present.  Due to a
