@@ -24,25 +24,28 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 		names[c] = ocol.name;
 		comments[c] = ocol.comment; // user might want to split by \r\n...
 		commands[c] = ocol.command;
-		int length = ocol.endRow - ocol.beginRow; // length <= data.size() <= ocol.numRows
 		if (
 			std::all_of(
-				ocol.data.begin(), ocol.data.begin() + length,
+				ocol.data.begin(), ocol.data.end(),
 				[](const Origin::variant & v){
 					return v.type() == Origin::variant::V_DOUBLE;
 				}
 			)
 		){
 			NumericVector ncol(osp.maxRows, NA_REAL);
-			for (int row = 0; row < length; row++)
-				ncol[ocol.beginRow + row] = ocol.data[row].as_double();
+			for (int row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
+				ncol[row] = ocol.data[row].as_double();
+				if (ncol[row] == _ONAN) ncol[row] = NAN;
+			}
 			rsp[c] = ncol;
 		} else {
 			CharacterVector ccol(osp.maxRows, NA_STRING);
-			for (int row = 0; row < length; row++) {
+			for (int row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
 				const Origin::variant & v = ocol.data[row];
 				if (v.type() == Origin::variant::V_DOUBLE)
-					ccol[ocol.beginRow + row] = std::to_string(v.as_double()); // yuck
+					ccol[ocol.beginRow + row] =
+						v.as_double() == _ONAN ? "NaN"
+						: std::to_string(v.as_double()); // yuck
 				else
 					ccol[ocol.beginRow + row] = v.as_string();
 			}
@@ -64,11 +67,19 @@ List read_opj(const std::string & file) {
 
 	if (!opj.parse()) stop("Failed to open and/or parse " + file); // throws
 
-	List ret;
+	List ret; // FIXME
 
 	for (unsigned int i = 0; i < opj.spreadCount(); i++) {
-		Origin::SpreadSheet & osp = opj.spread(i);
+		const Origin::SpreadSheet & osp = opj.spread(i);
 		ret[osp.name] = import_spreadsheet(osp);
+	}
+
+	for (unsigned int i = 0; i < opj.excelCount(); i++) {
+		const Origin::Excel & oex = opj.excel(i);
+		List exl;
+		for (const Origin::SpreadSheet & sp : oex.sheets)
+			exl[sp.name] = import_spreadsheet(sp);
+		ret[oex.name] = exl;
 	}
 
 	// TODO: matrix, excel, graph, note
