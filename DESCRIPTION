@@ -19,7 +19,7 @@ Description: Read the data from Origin(R) project files ('*.opj')
 	and no export is planned. More object types may be available to
 	be imported later.
 License: GPL (>= 3)
-Imports: Rcpp (>= 1.0.0)
+Imports: Rcpp (>= 0.12.9)
 LinkingTo: Rcpp
 URL: https://github.com/aitap/Ropj
 BugReports: https://github.com/aitap/Ropj/issues
