@@ -15,6 +15,49 @@ using namespace Rcpp;
 
 #include "OriginFile.h"
 
+static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
+	List rsp(osp.columns.size());
+	CharacterVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
+
+	for (unsigned int c = 0; c < osp.columns.size(); c++) {
+		const Origin::SpreadColumn & ocol = osp.columns[c];
+		names[c] = ocol.name;
+		comments[c] = ocol.comment; // user might want to split by \r\n...
+		commands[c] = ocol.command;
+		int length = ocol.endRow - ocol.beginRow; // length <= data.size() <= ocol.numRows
+		if (
+			std::all_of(
+				ocol.data.begin(), ocol.data.begin() + length,
+				[](const Origin::variant & v){
+					return v.type() == Origin::variant::V_DOUBLE;
+				}
+			)
+		){
+			NumericVector ncol(osp.maxRows, NA_REAL);
+			for (int row = 0; row < length; row++)
+				ncol[ocol.beginRow + row] = ocol.data[row].as_double();
+			rsp[c] = ncol;
+		} else {
+			CharacterVector ccol(osp.maxRows, NA_STRING);
+			for (int row = 0; row < length; row++) {
+				const Origin::variant & v = ocol.data[row];
+				if (v.type() == Origin::variant::V_DOUBLE)
+					ccol[ocol.beginRow + row] = std::to_string(v.as_double()); // yuck
+				else
+					ccol[ocol.beginRow + row] = v.as_string();
+			}
+			rsp[c] = ccol;
+		}
+	}
+
+	rsp.attr("names") = names;
+	DataFrame dsp(rsp);
+	// must preserve the attributes - assign them after creating DF
+	dsp.attr("comments") = comments;
+	dsp.attr("commands") = commands;
+	return dsp;
+}
+
 // [[Rcpp::export(name="read.opj")]]
 List read_opj(const std::string & file) {
 	OriginFile opj(file);
@@ -25,48 +68,7 @@ List read_opj(const std::string & file) {
 
 	for (unsigned int i = 0; i < opj.spreadCount(); i++) {
 		Origin::SpreadSheet & osp = opj.spread(i);
-
-		List rsp(osp.columns.size());
-		CharacterVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
-
-		for (unsigned int c = 0; c < osp.columns.size(); c++) {
-			Origin::SpreadColumn & ocol = osp.columns[c];
-			names[c] = ocol.name;
-			comments[c] = ocol.comment; // user might want to split by \r\n...
-			commands[c] = ocol.command;
-			int length = ocol.endRow - ocol.beginRow; // length <= data.size() <= ocol.numRows
-			if (
-				std::all_of(
-					ocol.data.begin(), ocol.data.begin() + length,
-					[](const Origin::variant & v){
-						return v.type() == Origin::variant::V_DOUBLE;
-					}
-				)
-			){
-				NumericVector ncol(osp.maxRows, NA_REAL);
-				for (int row = 0; row < length; row++)
-					ncol[ocol.beginRow + row] = ocol.data[row].as_double();
-				rsp[c] = ncol;
-			} else {
-				CharacterVector ccol(osp.maxRows, NA_STRING);
-				for (int row = 0; row < length; row++) {
-					Origin::variant & v = ocol.data[row];
-					if (v.type() == Origin::variant::V_DOUBLE)
-						ccol[ocol.beginRow + row] = std::to_string(v.as_double()); // yuck
-					else
-						ccol[ocol.beginRow + row] = v.as_string();
-				}
-				rsp[c] = ccol;
-			}
-		}
-
-		rsp.attr("names") = names;
-		DataFrame dsp(rsp);
-		// must preserve the attributes - assign them after creating DF
-		dsp.attr("comments") = comments;
-		dsp.attr("commands") = commands;
-		// proxy objects don't seem to have .attr() method
-		ret[osp.name] = dsp;
+		ret[osp.name] = import_spreadsheet(osp);
 	}
 
 	// TODO: matrix, excel, graph, note
