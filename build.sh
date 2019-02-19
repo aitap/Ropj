@@ -4,4 +4,6 @@ nproc=$(nproc) || nproc=1
 export MAKE="make -j$nproc"
 rm -vf Ropj_*.tar.gz
 R CMD build .
-R CMD check --as-cran Ropj_*.tar.gz
+# pass check [--as-cran] before releasing
+if [ $# -eq 0 ]; then set -- INSTALL; fi
+R CMD "$@" Ropj_*.tar.gz
