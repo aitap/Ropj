@@ -17,13 +17,13 @@ using namespace Rcpp;
 
 static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 	List rsp(osp.columns.size());
-	CharacterVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
+	StringVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
 
 	for (unsigned int c = 0; c < osp.columns.size(); c++) {
 		const Origin::SpreadColumn & ocol = osp.columns[c];
-		names[c] = ocol.name;
-		comments[c] = ocol.comment; // user might want to split by \r\n...
-		commands[c] = ocol.command;
+		names[c] = String(ocol.name, CE_LATIN1);
+		comments[c] = String(ocol.comment, CE_LATIN1); // user might want to split by \r\n...
+		commands[c] = String(ocol.command, CE_LATIN1);
 		if (
 			std::all_of(
 				ocol.data.begin(), ocol.data.end(),
@@ -39,13 +39,13 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 			}
 			rsp[c] = ncol;
 		} else {
-			CharacterVector ccol(osp.maxRows, NA_STRING);
+			StringVector ccol(osp.maxRows, NA_STRING);
 			for (int row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
 				const Origin::variant & v = ocol.data[row];
 				if (v.type() == Origin::variant::V_DOUBLE) {
 					if (v.as_double() != _ONAN) ccol[row] = std::to_string(v.as_double()); // yuck
 				} else {
-					ccol[row] = v.as_string();
+					ccol[row] = String(v.as_string(), CE_LATIN1);
 				}
 			}
 			rsp[c] = ccol;
@@ -68,37 +68,36 @@ List read_opj(const std::string & file) {
 
 	unsigned int items = opj.spreadCount() + opj.excelCount(), j = 0;
 	List ret(items);
-	CharacterVector retn(items);
+	StringVector retn(items);
 
 
 	for (unsigned int i = 0; i < opj.spreadCount(); i++, j++) {
 		const Origin::SpreadSheet & osp = opj.spread(i);
+		retn[j] = String(osp.name, CE_LATIN1);
 		ret[j] = import_spreadsheet(osp);
-		retn[j] = osp.name;
 	}
 
-	for (unsigned int i = 0; i < opj.excelCount(); i++) {
+	for (unsigned int i = 0; i < opj.excelCount(); i++, j++) {
 		const Origin::Excel & oex = opj.excel(i);
+		retn[j] = String(oex.name, CE_LATIN1);
 
 		List exl(oex.sheets.size());
-		CharacterVector exln(oex.sheets.size());
+		StringVector exln(oex.sheets.size());
 
 		for (size_t sp = 0; sp < oex.sheets.size(); sp++) {
 			exl[sp] = import_spreadsheet(oex.sheets[sp]);
-			exln[sp] = oex.sheets[sp].name;
+			exln[sp] = String(oex.sheets[sp].name, CE_LATIN1);
 		}
 
 		exl.attr("names") = exln;
-
 		ret[j] = exl;
-		retn[j] = oex.name;
 	}
-	ret.attr("names") = retn;
 
-	// TODO: matrix, excel, graph, note
+	// TODO: matrix, graph, note
 
 	// FIXME: "dataset" and "function" are going to be untested
 	// because I cannot find them in my copy of Origin
 
+	ret.attr("names") = retn;
     return ret;
 }
