@@ -42,12 +42,11 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 			CharacterVector ccol(osp.maxRows, NA_STRING);
 			for (int row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
 				const Origin::variant & v = ocol.data[row];
-				if (v.type() == Origin::variant::V_DOUBLE)
-					ccol[ocol.beginRow + row] =
-						v.as_double() == _ONAN ? "NaN"
-						: std::to_string(v.as_double()); // yuck
-				else
-					ccol[ocol.beginRow + row] = v.as_string();
+				if (v.type() == Origin::variant::V_DOUBLE) {
+					if (v.as_double() != _ONAN) ccol[row] = std::to_string(v.as_double()); // yuck
+				} else {
+					ccol[row] = v.as_string();
+				}
 			}
 			rsp[c] = ccol;
 		}
