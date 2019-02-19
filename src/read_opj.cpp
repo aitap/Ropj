@@ -68,18 +68,20 @@ List read_opj(const std::string & file) {
 
 	unsigned int items = opj.spreadCount() + opj.excelCount(), j = 0;
 	List ret(items);
-	StringVector retn(items);
+	StringVector retn(items), retl(items);
 
 
 	for (unsigned int i = 0; i < opj.spreadCount(); i++, j++) {
 		const Origin::SpreadSheet & osp = opj.spread(i);
 		retn[j] = String(osp.name, CE_LATIN1);
+		retl[j] = String(osp.label, CE_LATIN1);
 		ret[j] = import_spreadsheet(osp);
 	}
 
 	for (unsigned int i = 0; i < opj.excelCount(); i++, j++) {
 		const Origin::Excel & oex = opj.excel(i);
 		retn[j] = String(oex.name, CE_LATIN1);
+		retl[j] = String(oex.label, CE_LATIN1);
 
 		List exl(oex.sheets.size());
 		StringVector exln(oex.sheets.size());
@@ -99,5 +101,6 @@ List read_opj(const std::string & file) {
 	// because I cannot find them in my copy of Origin
 
 	ret.attr("names") = retn;
+	ret.attr("comment") = retl;
     return ret;
 }
