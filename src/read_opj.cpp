@@ -67,20 +67,34 @@ List read_opj(const std::string & file) {
 
 	if (!opj.parse()) stop("Failed to open and/or parse " + file); // throws
 
-	List ret; // FIXME
+	unsigned int items = opj.spreadCount() + opj.excelCount(), j = 0;
+	List ret(items);
+	CharacterVector retn(items);
 
-	for (unsigned int i = 0; i < opj.spreadCount(); i++) {
+
+	for (unsigned int i = 0; i < opj.spreadCount(); i++, j++) {
 		const Origin::SpreadSheet & osp = opj.spread(i);
-		ret[osp.name] = import_spreadsheet(osp);
+		ret[j] = import_spreadsheet(osp);
+		retn[j] = osp.name;
 	}
 
 	for (unsigned int i = 0; i < opj.excelCount(); i++) {
 		const Origin::Excel & oex = opj.excel(i);
-		List exl;
-		for (const Origin::SpreadSheet & sp : oex.sheets)
-			exl[sp.name] = import_spreadsheet(sp);
-		ret[oex.name] = exl;
+
+		List exl(oex.sheets.size());
+		CharacterVector exln(oex.sheets.size());
+
+		for (size_t sp = 0; sp < oex.sheets.size(); sp++) {
+			exl[sp] = import_spreadsheet(oex.sheets[sp]);
+			exln[sp] = oex.sheets[sp].name;
+		}
+
+		exl.attr("names") = exln;
+
+		ret[j] = exl;
+		retn[j] = oex.name;
 	}
+	ret.attr("names") = retn;
 
 	// TODO: matrix, excel, graph, note
 
