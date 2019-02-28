@@ -1,6 +1,3 @@
-* better test.opj
- - add a multi-spread spreadsheet
- - a single spreadsheet with both label and command
- - nonsymmetric matrix
+* import_matrix: transpose the matrix on import
 * implement custom character encoding
 ? import datasets, graphs, functions
