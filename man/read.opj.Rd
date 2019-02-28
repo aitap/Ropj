@@ -8,12 +8,19 @@
   of. For now, only spreadsheets are returned as \code{\link{data.frame}}s.
 }
 \usage{
-  read.opj(file)
+  read.opj(file, encoding = 'latin1')
 }
 \arguments{
   \item{file}{
     Path to the OPJ file to parse.  Only file paths are supported,
     not R connections.
+  }
+  \item{encoding}{
+    Encoding of the strings inside the file being opened. The default of
+    \code{'latin1'} is usually right and safe to use. See
+    \code{\link{iconvlist}()} for the full list of encodings supported by
+    your R installation. This should correspond to the ANSI code page of
+    Windows installation used to produce the file.
   }
 }
 \value{
@@ -51,12 +58,18 @@
 }
 \examples{
   x <- read.opj(system.file('test.opj', package = 'Ropj'))
-  head(x$Book1)
-  attr(x$Book1, 'comments')
-  head(x$Book2)
+  head(x$Book2, 7)
+  attr(x$Book2, 'comments')
   attr(x$Book2, 'commands')
-  x$MBook1$MSheet1[1:6,1:4]
-  x$Notes
+  with(x$Book1, head(Sheet2 - Sheet1))
+  x$MBook1$MSheet1[1:4,1:4]
+  x$Note1
+
+  \dontrun{
+    # encoding names aren't guaranteed to be supported across all platforms
+    x <- read.opj(system.file('test.opj', package = 'Ropj'), 'WINDOWS-1251')
+    x$cyrillic
+  }
 }
 \keyword{IO}
 \keyword{file}
