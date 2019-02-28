@@ -22,7 +22,7 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 	for (unsigned int c = 0; c < osp.columns.size(); c++) {
 		const Origin::SpreadColumn & ocol = osp.columns[c];
 		names[c] = String(ocol.name, CE_LATIN1);
-		comments[c] = String(ocol.comment, CE_LATIN1); // user might want to split by \r\n...
+		comments[c] = String(ocol.comment, CE_LATIN1);
 		commands[c] = String(ocol.command, CE_LATIN1);
 		if (
 			std::all_of(
@@ -143,8 +143,6 @@ List read_opj(const std::string & file) {
 		retl[j] = String(ont.label, CE_LATIN1);
 		ret[j] = String(ont.text, CE_LATIN1);
 	}
-
-	// TODO: graph
 
 	ret.attr("names") = retn;
 	ret.attr("comment") = retl;

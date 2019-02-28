@@ -1,5 +1,6 @@
-* Multi-spread: document them and add a sample to test.opj
-* document the matrix import
-* document the note import
+* better test.opj
+ - add a multi-spread spreadsheet
+ - a single spreadsheet with both label and command
+ - nonsymmetric matrix
 * implement custom character encoding
-* Import other kinds of objects
+? import datasets, graphs, functions
