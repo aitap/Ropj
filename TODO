@@ -1,3 +1,5 @@
 * Multi-spread: document them and add a sample to test.opj
 * document the matrix import
+* document the note import
+* implement custom character encoding
 * Import other kinds of objects

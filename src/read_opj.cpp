@@ -100,7 +100,8 @@ List read_opj(const std::string & file) {
 
 	if (!opj.parse()) stop("Failed to open and/or parse " + file); // throws
 
-	unsigned int j = 0, items = opj.spreadCount() + opj.excelCount() + opj.matrixCount();
+	unsigned int j = 0,
+		items = opj.spreadCount() + opj.excelCount() + opj.matrixCount() + opj.noteCount();
 	List ret(items);
 	StringVector retn(items), retl(items);
 
@@ -136,7 +137,14 @@ List read_opj(const std::string & file) {
 		ret[j] = import_matrix(omt);
 	}
 
-	// TODO: graph, note
+	for (unsigned int i = 0; i < opj.noteCount(); i++, j++) {
+		const Origin::Note & ont = opj.note(i);
+		retn[j] = String(ont.name, CE_LATIN1);
+		retl[j] = String(ont.label, CE_LATIN1);
+		ret[j] = String(ont.text, CE_LATIN1);
+	}
+
+	// TODO: graph
 
 	ret.attr("names") = retn;
 	ret.attr("comment") = retl;
