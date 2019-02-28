@@ -70,18 +70,18 @@ static List import_matrix(const Origin::Matrix & omt) {
 	List ret(omt.sheets.size());
 	StringVector names(ret.size()), commands(ret.size());
 	for (unsigned int i = 0; i < omt.sheets.size(); i++) {
-		NumericMatrix rms(Dimension(omt.sheets[i].rowCount, omt.sheets[i].columnCount));
+		NumericMatrix rms(Dimension(omt.sheets[i].columnCount, omt.sheets[i].rowCount));
 		std::copy_n(omt.sheets[i].data.begin(), rms.size(), rms.begin());
 		std::replace(rms.begin(), rms.end(), _ONAN, R_NaN);
 
 		List dimnames(2);
 		dimnames[0] = make_dimnames(
 			omt.sheets[i].coordinates[3], omt.sheets[i].coordinates[1],
-			omt.sheets[i].rowCount
+			omt.sheets[i].columnCount
 		);
 		dimnames[1] = make_dimnames(
 			omt.sheets[i].coordinates[2], omt.sheets[i].coordinates[0],
-			omt.sheets[i].columnCount
+			omt.sheets[i].rowCount
 		);
 		rms.attr("dimnames") = dimnames;
 
