@@ -15,6 +15,12 @@ using namespace Rcpp;
 
 #include "OriginFile.h"
 
+static String decode_string(const std::string & s, const char * encoding) {
+	Environment base("package:base");
+	Function iconv = base["iconv"];
+	return iconv(s, Named("from", encoding), Named("to", ""));
+}
+
 static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 	List rsp(osp.columns.size());
 	StringVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
