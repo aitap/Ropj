@@ -60,13 +60,47 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 	return dsp;
 }
 
+static NumericVector make_dimnames(double from, double to, unsigned short size) {
+	Environment base("package:base");
+	Function seq = base["seq"];
+	return seq(Named("from", from), Named("to", to), Named("length.out", size));
+}
+
+static List import_matrix(const Origin::Matrix & omt) {
+	List ret(omt.sheets.size());
+	StringVector names(ret.size()), commands(ret.size());
+	for (unsigned int i = 0; i < omt.sheets.size(); i++) {
+		NumericMatrix rms(Dimension(omt.sheets[i].rowCount, omt.sheets[i].columnCount));
+		std::copy_n(omt.sheets[i].data.begin(), rms.size(), rms.begin());
+		std::replace(rms.begin(), rms.end(), _ONAN, R_NaN);
+
+		List dimnames(2);
+		dimnames[0] = make_dimnames(
+			omt.sheets[i].coordinates[3], omt.sheets[i].coordinates[1],
+			omt.sheets[i].rowCount
+		);
+		dimnames[1] = make_dimnames(
+			omt.sheets[i].coordinates[2], omt.sheets[i].coordinates[0],
+			omt.sheets[i].columnCount
+		);
+		rms.attr("dimnames") = dimnames;
+
+		ret[i] = rms;
+		names[i] = omt.sheets[i].name;
+		commands[i] = omt.sheets[i].command;
+	}
+	ret.attr("names") = names;
+	ret.attr("commands") = commands;
+	return ret;
+}
+
 // [[Rcpp::export(name="read.opj")]]
 List read_opj(const std::string & file) {
 	OriginFile opj(file);
 
 	if (!opj.parse()) stop("Failed to open and/or parse " + file); // throws
 
-	unsigned int items = opj.spreadCount() + opj.excelCount(), j = 0;
+	unsigned int j = 0, items = opj.spreadCount() + opj.excelCount() + opj.matrixCount();
 	List ret(items);
 	StringVector retn(items), retl(items);
 
@@ -95,10 +129,14 @@ List read_opj(const std::string & file) {
 		ret[j] = exl;
 	}
 
-	// TODO: matrix, graph, note
+	for (unsigned int i = 0; i < opj.matrixCount(); i++, j++) {
+		const Origin::Matrix & omt = opj.matrix(i);
+		retn[j] = String(omt.name, CE_LATIN1);
+		retl[j] = String(omt.label, CE_LATIN1);
+		ret[j] = import_matrix(omt);
+	}
 
-	// FIXME: "dataset" and "function" are going to be untested
-	// because I cannot find them in my copy of Origin
+	// TODO: graph, note
 
 	ret.attr("names") = retn;
 	ret.attr("comment") = retl;
