@@ -1,3 +1,2 @@
-* import_matrix: transpose the matrix on import
 * read.opj: document the encoding parameter
 ? import datasets, graphs, functions

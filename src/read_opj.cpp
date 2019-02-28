@@ -91,7 +91,7 @@ static List import_matrix(const Origin::Matrix & omt, const char * encoding) {
 		);
 		rms.attr("dimnames") = dimnames;
 
-		ret[i] = rms;
+		ret[i] = transpose(rms);
 		names[i] = decode_string(omt.sheets[i].name, encoding);
 		commands[i] = decode_string(omt.sheets[i].command, encoding);
 	}
