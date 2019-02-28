@@ -15,15 +15,21 @@ using namespace Rcpp;
 
 #include "OriginFile.h"
 
-static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
+static String decode_string(const std::string & s, const char * encoding) {
+	Environment base("package:base");
+	Function iconv = base["iconv"];
+	return iconv(s, Named("from", encoding), Named("to", ""));
+}
+
+static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp, const char * encoding) {
 	List rsp(osp.columns.size());
 	StringVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
 
 	for (unsigned int c = 0; c < osp.columns.size(); c++) {
 		const Origin::SpreadColumn & ocol = osp.columns[c];
-		names[c] = String(ocol.name, CE_LATIN1);
-		comments[c] = String(ocol.comment, CE_LATIN1); // user might want to split by \r\n...
-		commands[c] = String(ocol.command, CE_LATIN1);
+		names[c] = decode_string(ocol.name, encoding);
+		comments[c] = decode_string(ocol.comment, encoding);
+		commands[c] = decode_string(ocol.command, encoding);
 		if (
 			std::all_of(
 				ocol.data.begin(), ocol.data.end(),
@@ -45,7 +51,7 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 				if (v.type() == Origin::variant::V_DOUBLE) {
 					if (v.as_double() != _ONAN) ccol[row] = std::to_string(v.as_double()); // yuck
 				} else {
-					ccol[row] = String(v.as_string(), CE_LATIN1);
+					ccol[row] = decode_string(v.as_string(), encoding);
 				}
 			}
 			rsp[c] = ccol;
@@ -66,7 +72,7 @@ static NumericVector make_dimnames(double from, double to, unsigned short size) 
 	return seq(Named("from", from), Named("to", to), Named("length.out", size));
 }
 
-static List import_matrix(const Origin::Matrix & omt) {
+static List import_matrix(const Origin::Matrix & omt, const char * encoding) {
 	List ret(omt.sheets.size());
 	StringVector names(ret.size()), commands(ret.size());
 	for (unsigned int i = 0; i < omt.sheets.size(); i++) {
@@ -86,8 +92,8 @@ static List import_matrix(const Origin::Matrix & omt) {
 		rms.attr("dimnames") = dimnames;
 
 		ret[i] = rms;
-		names[i] = omt.sheets[i].name;
-		commands[i] = omt.sheets[i].command;
+		names[i] = decode_string(omt.sheets[i].name, encoding);
+		commands[i] = decode_string(omt.sheets[i].command, encoding);
 	}
 	ret.attr("names") = names;
 	ret.attr("commands") = commands;
@@ -95,34 +101,35 @@ static List import_matrix(const Origin::Matrix & omt) {
 }
 
 // [[Rcpp::export(name="read.opj")]]
-List read_opj(const std::string & file) {
+List read_opj(const std::string & file, const char * encoding = "latin1") {
 	OriginFile opj(file);
 
 	if (!opj.parse()) stop("Failed to open and/or parse " + file); // throws
 
-	unsigned int j = 0, items = opj.spreadCount() + opj.excelCount() + opj.matrixCount();
+	unsigned int j = 0,
+		items = opj.spreadCount() + opj.excelCount() + opj.matrixCount() + opj.noteCount();
 	List ret(items);
 	StringVector retn(items), retl(items);
 
 
 	for (unsigned int i = 0; i < opj.spreadCount(); i++, j++) {
 		const Origin::SpreadSheet & osp = opj.spread(i);
-		retn[j] = String(osp.name, CE_LATIN1);
-		retl[j] = String(osp.label, CE_LATIN1);
-		ret[j] = import_spreadsheet(osp);
+		retn[j] = decode_string(osp.name, encoding);
+		retl[j] = decode_string(osp.label, encoding);
+		ret[j] = import_spreadsheet(osp, encoding);
 	}
 
 	for (unsigned int i = 0; i < opj.excelCount(); i++, j++) {
 		const Origin::Excel & oex = opj.excel(i);
-		retn[j] = String(oex.name, CE_LATIN1);
-		retl[j] = String(oex.label, CE_LATIN1);
+		retn[j] = decode_string(oex.name, encoding);
+		retl[j] = decode_string(oex.label, encoding);
 
 		List exl(oex.sheets.size());
 		StringVector exln(oex.sheets.size());
 
 		for (size_t sp = 0; sp < oex.sheets.size(); sp++) {
-			exl[sp] = import_spreadsheet(oex.sheets[sp]);
-			exln[sp] = String(oex.sheets[sp].name, CE_LATIN1);
+			exl[sp] = import_spreadsheet(oex.sheets[sp], encoding);
+			exln[sp] = decode_string(oex.sheets[sp].name, encoding);
 		}
 
 		exl.attr("names") = exln;
@@ -131,12 +138,17 @@ List read_opj(const std::string & file) {
 
 	for (unsigned int i = 0; i < opj.matrixCount(); i++, j++) {
 		const Origin::Matrix & omt = opj.matrix(i);
-		retn[j] = String(omt.name, CE_LATIN1);
-		retl[j] = String(omt.label, CE_LATIN1);
-		ret[j] = import_matrix(omt);
+		retn[j] = decode_string(omt.name, encoding);
+		retl[j] = decode_string(omt.label, encoding);
+		ret[j] = import_matrix(omt, encoding);
 	}
 
-	// TODO: graph, note
+	for (unsigned int i = 0; i < opj.noteCount(); i++, j++) {
+		const Origin::Note & ont = opj.note(i);
+		retn[j] = decode_string(ont.name, encoding);
+		retl[j] = decode_string(ont.label, encoding);
+		ret[j] = decode_string(ont.text, encoding);
+	}
 
 	ret.attr("names") = retn;
 	ret.attr("comment") = retl;

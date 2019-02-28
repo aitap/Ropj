@@ -1,3 +1,4 @@
+% vi:et:ts=2
 \name{read.opj}
 \alias{read.opj}
 \docType{package}
@@ -7,7 +8,7 @@
   of. For now, only spreadsheets are returned as \code{\link{data.frame}}s.
 }
 \usage{
-read.opj(file)
+  read.opj(file)
 }
 \arguments{
   \item{file}{
@@ -16,7 +17,7 @@ read.opj(file)
   }
 }
 \value{
-  A \code{\link{list}} containing named objects stored in the file.
+  A named \code{\link{list}} containing objects stored in the file.
 
   \itemize{
     \item Spreadsheets are presented as \code{\link{data.frame}}s,
@@ -30,6 +31,22 @@ read.opj(file)
       \item \code{commands} contains the formula that was used to
       create the values of the column (e.g. \code{col(A) * 2 + 1}).
     }
+    \item Multi-sheet spreadsheets are stored as named lists of
+    \code{\link{data.frame}}s described above.
+    \item Matrices are presented as \code{\link{list}}s of \code{\link{matrix}}
+    objects containing numeric data. \code{\link{dimnames}} are also assigned.
+    The list also has attributes:
+    \itemize{
+      \item \code{commands} contains the formula that was used to
+      compute the values in the matrix.
+    }
+    \item Notes are stored as plain strings.
+  }
+
+  The list also has attributes set:
+  \itemize{
+    \item \code{\link{comment}} contains the long names of the objects stored
+    in the file.
   }
 }
 \examples{
@@ -38,6 +55,8 @@ read.opj(file)
   attr(x$Book1, 'comments')
   head(x$Book2)
   attr(x$Book2, 'commands')
+  x$MBook1$MSheet1[1:6,1:4]
+  x$Notes
 }
 \keyword{IO}
 \keyword{file}
