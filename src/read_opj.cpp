@@ -35,7 +35,7 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp) {
 			NumericVector ncol(osp.maxRows, NA_REAL);
 			for (int row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
 				ncol[row] = ocol.data[row].as_double();
-				if (ncol[row] == _ONAN) ncol[row] = NAN;
+				if (ncol[row] == _ONAN) ncol[row] = R_NaN;
 			}
 			rsp[c] = ncol;
 		} else {
