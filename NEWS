@@ -1,4 +1,4 @@
-XXXX-XX-XX  Unreleased
+2019-03-01 v0.2
 
 * Added support for multi-spreadsheets, matrices and notes
 * Correctly decode byte strings read from the file
