@@ -1,0 +1,8 @@
+XXXX-XX-XX  Unreleased
+
+* Added support for multi-spreadsheets, matrices and notes
+* Correctly decode byte strings read from the file
+
+2019-02-06 v0.1-1
+
+* Function read.opj imports individual spreadsheets as data.frames
