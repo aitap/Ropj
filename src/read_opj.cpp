@@ -25,6 +25,10 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp, const char 
 	List rsp(osp.columns.size());
 	StringVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
 
+	size_t maxRows = osp.maxRows;
+	for (const Origin::SpreadColumn & osc : osp.columns)
+		maxRows = std::max(osc.data.size(), maxRows);
+
 	for (unsigned int c = 0; c < osp.columns.size(); c++) {
 		const Origin::SpreadColumn & ocol = osp.columns[c];
 		names[c] = decode_string(ocol.name, encoding);
@@ -38,15 +42,15 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp, const char 
 				}
 			)
 		){
-			NumericVector ncol(osp.maxRows, NA_REAL);
-			for (size_t row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
+			NumericVector ncol(maxRows, NA_REAL);
+			for (size_t row = 0; row < ocol.data.size(); row++) {
 				ncol[row] = ocol.data[row].as_double();
 				if (ncol[row] == _ONAN) ncol[row] = R_NaN;
 			}
 			rsp[c] = ncol;
 		} else {
-			StringVector ccol(osp.maxRows, NA_STRING);
-			for (size_t row = 0; row < std::min(ocol.data.size(), (size_t)osp.maxRows); row++) {
+			StringVector ccol(maxRows, NA_STRING);
+			for (size_t row = 0; row < ocol.data.size(); row++) {
 				const Origin::variant & v = ocol.data[row];
 				if (v.type() == Origin::variant::V_DOUBLE) {
 					if (v.as_double() != _ONAN) ccol[row] = std::to_string(v.as_double()); // yuck
