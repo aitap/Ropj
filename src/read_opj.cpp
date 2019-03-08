@@ -42,6 +42,7 @@ public:
 			out.resize(out.size() * 2);
 			outbuf = &out[pos];
 		}
+		out.resize(out.size() - outbytesleft); // get rid of trailing \0
 
 		return String(out, CE_NATIVE);
 	}
