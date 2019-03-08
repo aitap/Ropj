@@ -1,2 +1,2 @@
-* fix truncation of long spreadsheets (something to do with maxRows, presumably)
+* valgrind reports leak around tree.hh:888, could be a problem for large OPJs
 ? import datasets, graphs, functions
