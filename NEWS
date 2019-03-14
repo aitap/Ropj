@@ -1,8 +1,9 @@
-XXXX-XX-XX UNRELEASED
+2019-03-14 v0.2-2
 
+* Prevent truncation of long tables when importing large files
+* Fix a memory leak possibly resulting from misuse of tree.hh library
 * Decode strings using Riconv interface instead of Rcpp::Function
   call, making it much faster
-* Fix a memory leak possibly resulting from misuse of tree.hh library
 
 2019-03-01 v0.2-1
 
