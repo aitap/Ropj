@@ -2,6 +2,8 @@
 
 * Use 'comment' attribute (as comment() function uses) for spreadsheet
   imports in addition to 'comments' attribute (as before)
+* Pass the ... arguments from read.opj to as.data.frame, making it
+  possible to set stringsAsFactors and other arguments
 
 2019-03-14 v0.2-2
 

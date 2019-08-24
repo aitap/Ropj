@@ -48,7 +48,7 @@ public:
 	}
 };
 
-static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp, decoder & dec) {
+static List import_spreadsheet(const Origin::SpreadSheet & osp, decoder & dec) {
 	List rsp(osp.columns.size());
 	StringVector names(rsp.size()), comments(rsp.size()), commands(rsp.size());
 
@@ -89,19 +89,12 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp, decoder & d
 		}
 	}
 
-	rsp.attr("names") = names;
-	DataFrame dsp(rsp);
-	// must preserve the attributes - assign them after creating DF
-	dsp.attr("comments") = comments; // XXX: Ropj <= 0.2-2
-	dsp.attr("comment") = comments;
-	dsp.attr("commands") = commands;
-	return dsp;
-}
-
-static NumericVector make_dimnames(double from, double to, unsigned short size) {
-	Environment base("package:base");
-	Function seq = base["seq"];
-	return seq(Named("from", from), Named("to", to), Named("length.out", size));
+	rsp.attr("names") = std::move(names);
+	rsp.attr("comments") = comments; // XXX: Ropj <= 0.2-2
+	rsp.attr("comment") = std::move(comments);
+	rsp.attr("commands") = std::move(commands);
+	rsp.attr("type") = "spreadsheet";
+	return rsp;
 }
 
 static List import_matrix(const Origin::Matrix & omt, decoder & dec) {
@@ -112,28 +105,19 @@ static List import_matrix(const Origin::Matrix & omt, decoder & dec) {
 		std::copy_n(omt.sheets[i].data.begin(), rms.size(), rms.begin());
 		std::replace(rms.begin(), rms.end(), _ONAN, R_NaN);
 
-		List dimnames(2);
-		dimnames[0] = make_dimnames(
-			omt.sheets[i].coordinates[3], omt.sheets[i].coordinates[1],
-			omt.sheets[i].columnCount
-		);
-		dimnames[1] = make_dimnames(
-			omt.sheets[i].coordinates[2], omt.sheets[i].coordinates[0],
-			omt.sheets[i].rowCount
-		);
-		rms.attr("dimnames") = dimnames;
-
-		ret[i] = transpose(rms);
+		rms.attr("dimensions") = NumericVector(omt.sheets[i].coordinates.begin(), omt.sheets[i].coordinates.end());
+		ret[i] = std::move(rms);
 		names[i] = dec(omt.sheets[i].name);
 		commands[i] = dec(omt.sheets[i].command);
 	}
 	ret.attr("names") = names;
 	ret.attr("commands") = commands;
+	ret.attr("type") = "matrix";
 	return ret;
 }
 
 // [[Rcpp::export(name="read_opj")]]
-List read_opj(const std::string & file, const char * encoding = "latin1") {
+List read_opj(const std::string & file, const char * encoding) {
 	decoder dec(encoding);
 	OriginFile opj(file);
 
@@ -166,6 +150,7 @@ List read_opj(const std::string & file, const char * encoding = "latin1") {
 		}
 
 		exl.attr("names") = exln;
+		exl.attr("type") = "excel";
 		ret[j] = exl;
 	}
 

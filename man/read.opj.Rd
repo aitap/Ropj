@@ -8,7 +8,7 @@
   of. For now, only spreadsheets are returned as \code{\link{data.frame}}s.
 }
 \usage{
-  read.opj(file, encoding = 'latin1')
+  read.opj(file, encoding = 'latin1', ...)
 }
 \arguments{
   \item{file}{
@@ -21,6 +21,11 @@
     \code{\link{iconvlist}()} for the full list of encodings supported by
     your R installation. This should correspond to the ANSI code page of
     Windows installation used to produce the file.
+  }
+  \item{\dots}{
+    The rest of the arguments is passed to \code{\link{as.data.frame}}
+    when converting spreadsheets, making it possible to set
+    \code{stringsAsFactors} and other parameters as needed.
   }
 }
 \value{
