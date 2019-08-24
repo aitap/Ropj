@@ -1,3 +1,8 @@
+????-??-?? UNRELEASED
+
+* Use 'comment' attribute (as comment() function uses) for spreadsheet
+  imports in addition to 'comments' attribute (as before)
+
 2019-03-14 v0.2-2
 
 * Prevent truncation of long tables when importing large files

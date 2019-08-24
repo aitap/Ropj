@@ -92,7 +92,8 @@ static DataFrame import_spreadsheet(const Origin::SpreadSheet & osp, decoder & d
 	rsp.attr("names") = names;
 	DataFrame dsp(rsp);
 	// must preserve the attributes - assign them after creating DF
-	dsp.attr("comments") = comments;
+	dsp.attr("comments") = comments; // XXX: Ropj <= 0.2-2
+	dsp.attr("comment") = comments;
 	dsp.attr("commands") = commands;
 	return dsp;
 }

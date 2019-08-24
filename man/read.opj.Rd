@@ -30,11 +30,12 @@
     \item Spreadsheets are presented as \code{\link{data.frame}}s,
     each having additional \code{\link{attributes}}:
     \itemize{
-      \item \code{comments} contains the fields Long name, Units,
+      \item \code{\link{comment}} contains the fields Long name, Units,
       and Comment, joined by \code{\\r\\n}, if present.  Due to a
       possible bug in \code{liborigin}, these values are sometimes
       followed by \code{@} and some text that wasn't present in
-      the original document.
+      the original document. (In versions prior to v0.2-2 it was called
+      \code{comments}, which should be still supported until v1.0.)
       \item \code{commands} contains the formula that was used to
       create the values of the column (e.g. \code{col(A) * 2 + 1}).
     }
