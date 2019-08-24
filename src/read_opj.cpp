@@ -131,7 +131,7 @@ static List import_matrix(const Origin::Matrix & omt, decoder & dec) {
 	return ret;
 }
 
-// [[Rcpp::export(name="read.opj")]]
+// [[Rcpp::export(name="read_opj")]]
 List read_opj(const std::string & file, const char * encoding = "latin1") {
 	decoder dec(encoding);
 	OriginFile opj(file);
