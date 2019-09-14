@@ -13,4 +13,3 @@ If you want to clone this repo, don't forget the `--recursive` flag. Otherwise,
 use `git submodule update --init --recursive` after you cloned it.
 
 [liborigin]: https://sourceforge.net/projects/liborigin/
-[Writing R Extensions]: https://cran.r-project.org/doc/manuals/R-exts.html#Writing-portable-packages
