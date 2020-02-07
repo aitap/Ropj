@@ -5,7 +5,8 @@
 \title{Parse Origin(R) project file into a list of objects}
 \description{
   This function parses an OPJ file into a list of objects it consists
-  of. For now, only spreadsheets are returned as \code{\link{data.frame}}s.
+  of. Items understood by \code{read.opj} include spreadsheets, matrices,
+  and notes.
 }
 \usage{
   read.opj(file, encoding = 'latin1', ...)
@@ -17,10 +18,10 @@
   }
   \item{encoding}{
     Encoding of the strings inside the file being opened. The default of
-    \code{'latin1'} is usually right and safe to use. See
-    \code{\link{iconvlist}()} for the full list of encodings supported by
-    your R installation. This should correspond to the ANSI code page of
-    Windows installation used to produce the file.
+    \code{'latin1'} is usually safe to use. See \code{\link{iconvlist}()}
+    for the full list of encodings supported by your R installation. This
+    should correspond to the ANSI code page of Windows installation used
+    to produce the file.
   }
   \item{\dots}{
     The rest of the arguments is passed to \code{\link{as.data.frame}}
@@ -33,7 +34,7 @@
 
   \itemize{
     \item Spreadsheets are presented as \code{\link{data.frame}}s,
-    each having additional \code{\link{attributes}}:
+    with additional \code{\link{attributes}}:
     \itemize{
       \item \code{\link{comment}} contains the fields Long name, Units,
       and Comment, joined by \code{\\r\\n}, if present.  Due to a
@@ -65,7 +66,7 @@
 \examples{
   x <- read.opj(system.file('test.opj', package = 'Ropj'))
   head(x$Book2, 7)
-  attr(x$Book2, 'comments')
+  comment(x$Book2)
   attr(x$Book2, 'commands')
   with(x$Book1, head(Sheet2 - Sheet1))
   x$MBook1$MSheet1[1:4,1:4]
