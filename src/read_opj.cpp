@@ -42,7 +42,11 @@ public:
 			out.resize(out.size() * 2);
 			outbuf = &out[pos];
 		}
-		out.resize(out.size() - outbytesleft); // get rid of trailing \0
+		// get rid of trailing \0, if any resulted from over-allocation
+		out.resize(out.size() - outbytesleft);
+		// there may have been NULs in the input string, too
+		auto nulpos = out.find('\0');
+		if (nulpos != std::string::npos) out.erase(nulpos);
 
 		return String(out, CE_NATIVE);
 	}
