@@ -7,8 +7,9 @@ the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 */
 
-#include <algorithm>
-#include <string>
+#include <algorithm> // max, all_of
+#include <iterator> // distance
+#include <string> // string
 
 #include <Rcpp.h>
 using namespace Rcpp;
@@ -120,8 +121,39 @@ static List import_matrix(const Origin::Matrix & omt, decoder & dec) {
 	return ret;
 }
 
+static List import_tree(
+	tree<Origin::ProjectNode>::sibling_iterator cur,
+	tree<Origin::ProjectNode>::sibling_iterator end,
+	decoder & dec
+) {
+	unsigned int i = 0;
+	List ret(std::distance(cur, end));
+	StringVector names(ret.size());
+
+	for (; cur != end; ++cur, ++i) {
+		String nm = dec(cur->name);
+		names[i] = nm;
+		switch(cur->type) {
+		case Origin::ProjectNode::Folder:
+			ret[i] = import_tree(cur.begin(), cur.end(), dec);
+			break;
+		case Origin::ProjectNode::SpreadSheet:
+		case Origin::ProjectNode::Matrix:
+		case Origin::ProjectNode::Excel:
+		case Origin::ProjectNode::Note:
+			ret[i] = nm;
+			break;
+		default: // ignore types we don't understand
+			break;
+		}
+	}
+
+	ret.attr("names") = names;
+	return ret;
+}
+
 // [[Rcpp::export(name="read_opj")]]
-List read_opj(const std::string & file, const char * encoding) {
+List read_opj(const std::string & file, const char * encoding, bool tree) {
 	decoder dec(encoding);
 	OriginFile opj(file);
 
@@ -174,5 +206,11 @@ List read_opj(const std::string & file, const char * encoding) {
 
 	ret.attr("names") = retn;
 	ret.attr("comment") = retl;
-    return ret;
+	if (tree)
+		ret.attr("tree") = import_tree(
+			// must skip the root of the tree when iterating over it
+			opj.project()->begin().begin(), opj.project()->begin().end(),
+			dec
+		);
+	return ret;
 }

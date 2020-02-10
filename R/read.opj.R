@@ -13,8 +13,8 @@
 	t(x)
 }
 
-read.opj <- function(file, encoding = 'latin1', ...) .lapply(
-	read_opj(file, encoding), function(x) if (is.list(x)) switch(
+read.opj <- function(file, encoding = 'latin1', tree = FALSE, ...) .lapply(
+	read_opj(file, encoding, tree), function(x) if (is.list(x)) switch(
 		attr(x, 'type'),
 		spreadsheet = .as.data.frame(x, ...),
 		matrix = .lapply(x, .matrix),
