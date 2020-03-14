@@ -14,11 +14,6 @@
 
   No write support seems to be planned in the foreseeable future.
 }
-\author{
-  \packageAuthor{Ropj}
-  
-  Maintainer: \packageMaintainer{Ropj}
-}
 \references{
   \url{https://sourceforge.net/projects/liborigin/}: the \code{liborigin}
   implementation used by this package. Seems to be maintained as of 2019.
