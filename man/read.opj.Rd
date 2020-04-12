@@ -34,7 +34,7 @@
   }
   \item{\dots}{
     The rest of the arguments is passed to \code{\link{as.data.frame}}
-    when converting spreadsheets from lists columns, making it possible
+    when converting spreadsheets from lists of columns, making it possible
     to set \code{stringsAsFactors} and other parameters as needed.
   }
 }
