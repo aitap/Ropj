@@ -81,7 +81,7 @@
   neither \emph{long} names nor \emph{folder} names are guaranteed to
   avoid collisions. Tree-like lists returned by \code{read.opj(..., tree =
   TRUE)} might be easier to navigate interactively but present problems
-  if someone gives one or many folders or objects the same long name.
+  if someone gives multiple folders or objects the same long name.
 }
 \examples{
   x <- read.opj(system.file('test.opj', package = 'Ropj'))
