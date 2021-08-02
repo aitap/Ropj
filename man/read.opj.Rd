@@ -13,8 +13,8 @@
 }
 \arguments{
   \item{file}{
-    Path to the OPJ file to parse.  Only file paths are supported,
-    not R connections.
+    Path to the OPJ file to parse. Only file paths are supported,
+    not R connections. Path is not expanded automatically.
   }
   \item{encoding}{
     Encoding of the strings inside the file being opened. This should
@@ -72,8 +72,9 @@
   contains the long names of the objects
   stored in the file.
 
-  When \code{tree = TRUE}, the list names are long names (if available)
-  and the list itself represents the folder structure of the project.
+  When \code{tree = TRUE}, the list names are long names (if present;
+  short otherwise) and the list itself represents the folder structure
+  of the project.
 }
 \note{
   While Origin(R) and its scripting language seem to rely on the
