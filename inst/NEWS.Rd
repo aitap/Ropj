@@ -1,5 +1,9 @@
 \name{NEWS}
 \title{News for package \pkg{Ropj}}
+\section{Changes in Ropj version 0.3-3 (202X-XX-XX)}{\itemize{
+  \item Importing OPJ files containing unsupported objects with
+  \code{tree = TRUE} now avoids an error in the R code.
+}}
 \section{Changes in Ropj version 0.3-2 (2022-03-14)}{\itemize{
   \item Update bundled \code{liborigin}, fixing issues related to newer
   project files.
