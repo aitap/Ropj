@@ -4,6 +4,19 @@
   \item Importing OPJ files containing unsupported objects with
   \code{tree = TRUE} now avoids an error in the R code.
 
+  \item A spurious MinGW warning concerning the use of \code{strftime}
+  with format strings \verb{\%F} and \verb{\%T} has been worked around
+  by patching out the call using the preprocessor. (The call wasn't
+  reachable from R code, and the UCRT library currently used by R is
+  documented to support these format strings.)
+
+  \item When decoding strings in the OPJ files, the target encoding is
+  now set to UTF-8, not the native encoding of the R session. This makes
+  it possible to decode strings not representable in the R session
+  encoding, i.e. Windows-1252 files on a Windows-1251 machine and vice
+  versa. Realistically, this is only important on Windows versions older
+  than Windows 10 build 1903.
+
   \item Updated bundled \code{liborigin}, fixing rare memory access
   issues.
 }}
