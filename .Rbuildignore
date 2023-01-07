@@ -4,3 +4,5 @@
 ^src/liborigin/.*\.(txt|in|png|dox)$
 ^src/liborigin/opj2dat.cpp$
 ^src/liborigin/doc$
+^src/liborigin/.*clang.*$
+^src/liborigin/.*(COPYING|FORMAT|README)
