@@ -1,10 +1,9 @@
 \name{NEWS}
 \title{News for package \pkg{Ropj}}
 \section{Changes in Ropj version 0.3-4 (202X-XX-XX)}{\itemize{
-  \item The package now defaults to the C++17 standard where such a
-  compiler is available, but may fall back to C++14 or C++11, which may
-  be useful on older versions of \R that don't know about new C++
-  standards.
+  \item The package now defaults to whatever C++ standard is set by
+  default, but may request C++17, C++14 or C++11 on older versions of \R
+  where C++ < 11 was the default.
 }}
 \section{Changes in Ropj version 0.3-3 (2023-01-08)}{\itemize{
   \item Importing OPJ files containing unsupported objects with
