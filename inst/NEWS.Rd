@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{News for package \pkg{Ropj}}
 \section{Changes in Ropj version 0.3-5 (2024-03-14)}{\itemize{
-  \item Update bundled \code{liborigin}, fixing a potential buffer
+  \item Updated bundled \code{liborigin}, fixing a potential buffer
   overflow.
 }}
 \section{Changes in Ropj version 0.3-4 (2023-03-14)}{\itemize{
