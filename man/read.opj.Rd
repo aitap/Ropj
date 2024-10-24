@@ -15,6 +15,11 @@
   \item{file}{
     Path to the OPJ file to parse. Only file paths are supported,
     not R connections. Path is not expanded automatically.
+
+    The path must be representable in the native encoding of the \R
+    session. Unfortunately, a Unicode path that doesn't fit in the ANSI
+    encoding will not work on Windows older than version 10, November
+    2019.
   }
   \item{encoding}{
     Encoding of the strings inside the file being opened. This should
