@@ -2,16 +2,17 @@ Package: Ropj
 Type: Package
 Title: Import Origin(R) Project Files
 Version: 0.3-5.9999
-Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = c('aut')),
-	person('Stefan', 'Gerlach', email = 'stefan.gerlach@uni-konstanz.de', role = c('aut')),
-	person('Ion', 'Vasilief', email = 'ion_vasilief@yahoo.fr', role = c('aut')),
-	person('Alex', 'Kargovsky', email = 'kargovsky@yumr.phys.msu.su', role = c('aut')),
-	person('Knut', 'Franke', email = 'Knut.Franke@gmx.de', role = c('ctb')),
-	person('Alexander', 'Semke', email = 'alexander.semke@web.de', role = c('ctb')),
-	person('Tilman', 'Benkert', email = 'thzs@gmx.net', role = c('ctb')),
-	person('Kasper', 'Peeters', email = 'kasper.peeters@aei.mpg.de', role = c('ctb')),
-	person('Russell', 'Standish', role = c('ctb')),
-	person('Ivan', 'Krylov', email = 'ikrylov@disroot.org', role = c('cre')))
+Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = 'aut'),
+	person('Stefan', 'Gerlach', email = 'stefan.gerlach@uni-konstanz.de', role = 'aut'),
+	person('Ion', 'Vasilief', email = 'ion_vasilief@yahoo.fr', role = 'aut'),
+	person('Alex', 'Kargovsky', email = 'kargovsky@yumr.phys.msu.su', role = 'aut'),
+	person('Knut', 'Franke', email = 'Knut.Franke@gmx.de', role = 'ctb'),
+	person('Alexander', 'Semke', email = 'alexander.semke@web.de', role = 'ctb'),
+	person('Tilman', 'Benkert', email = 'thzs@gmx.net', role = 'ctb'),
+	person('Kasper', 'Peeters', email = 'kasper.peeters@aei.mpg.de', role = 'ctb'),
+	person('Russell', 'Standish', role = 'ctb'),
+	person('Mehdi', 'Chinoune', email = 'mehdi.chinoune@hotmail.com', role = 'ctb'),
+	person('Ivan', 'Krylov', email = 'ikrylov@disroot.org', role = 'cre'))
 Description: Read the data from Origin(R) project files ('*.opj')
 	<https://www.originlab.com/doc/User-Guide/Origin-File-Types>.
 	No write support is planned.
