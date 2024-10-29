@@ -1,6 +1,7 @@
 \.o$
 \.git$
-^build\.sh$
+^GNUmakefile
+^Makevars.local
 ^src/liborigin/.*\.(txt|in|png|dox)$
 ^src/liborigin/opj2dat.cpp$
 ^src/liborigin/doc$
