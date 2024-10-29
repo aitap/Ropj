@@ -2,16 +2,16 @@ Package: Ropj
 Type: Package
 Title: Import Origin(R) Project Files
 Version: 0.3-5.9999
-Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = c('aut', 'cph')),
-	person('Stefan', 'Gerlach', email = 'stefan.gerlach@uni-konstanz.de', role = c('aut', 'cph')),
-	person('Ion', 'Vasilief', email = 'ion_vasilief@yahoo.fr', role = c('aut', 'cph')),
-	person('Alex', 'Kargovsky', email = 'kargovsky@yumr.phys.msu.su', role = c('aut', 'cph')),
-	person('Knut', 'Franke', email = 'Knut.Franke@gmx.de', role = c('ctb', 'cph')),
-	person('Alexander', 'Semke', email = 'alexander.semke@web.de', role = c('ctb', 'cph')),
-	person('Tilman', 'Benkert', email = 'thzs@gmx.net', role = c('ctb', 'cph')),
-	person('Kasper', 'Peeters', email = 'kasper.peeters@aei.mpg.de', role = c('ctb', 'cph')),
-	person('Russell', 'Standish', role = c('ctb', 'cph')),
-	person('Ivan', 'Krylov', email = 'krylov.r00t@gmail.com', role = c('cre', 'cph')))
+Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = c('aut')),
+	person('Stefan', 'Gerlach', email = 'stefan.gerlach@uni-konstanz.de', role = c('aut')),
+	person('Ion', 'Vasilief', email = 'ion_vasilief@yahoo.fr', role = c('aut')),
+	person('Alex', 'Kargovsky', email = 'kargovsky@yumr.phys.msu.su', role = c('aut')),
+	person('Knut', 'Franke', email = 'Knut.Franke@gmx.de', role = c('ctb')),
+	person('Alexander', 'Semke', email = 'alexander.semke@web.de', role = c('ctb')),
+	person('Tilman', 'Benkert', email = 'thzs@gmx.net', role = c('ctb')),
+	person('Kasper', 'Peeters', email = 'kasper.peeters@aei.mpg.de', role = c('ctb')),
+	person('Russell', 'Standish', role = c('ctb')),
+	person('Ivan', 'Krylov', email = 'ikrylov@disroot.org', role = c('cre')))
 Description: Read the data from Origin(R) project files ('*.opj')
 	<https://www.originlab.com/doc/User-Guide/Origin-File-Types>.
 	No write support is planned.
@@ -19,5 +19,4 @@ License: GPL (>= 3)
 Depends: R (>= 3.1)
 Imports: Rcpp (>= 0.12.9)
 LinkingTo: Rcpp
-URL: https://github.com/aitap/Ropj
-BugReports: https://github.com/aitap/Ropj/issues
+BugReports: https://codeberg.org/aitap/Ropj/issues
