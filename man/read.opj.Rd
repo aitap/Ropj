@@ -82,6 +82,8 @@
   of the project.
 }
 \note{
+  The new Unicode file format (\verb{OPJU}) is not supported.
+
   While Origin(R) and its scripting language seem to rely on the
   \emph{short} names of the objects being unique across a project,
   neither \emph{long} names nor \emph{folder} names are guaranteed to
