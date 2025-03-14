@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{News for package \pkg{Ropj}}
-\section{Changes in Ropj version 0.3-6}{\itemize{
+\section{Changes in Ropj version 0.3-6 (2025-03-14)}{\itemize{
   \item Fixed a bug preventing the code from reading file paths not in
   the native encoding.
   \item Updated bundled \code{liborigin} to \verb{3.0.3}.
