@@ -1,7 +1,7 @@
 Package: Ropj
 Type: Package
 Title: Import Origin(R) Project Files
-Version: 0.3-6
+Version: 0.3-6.1
 Authors@R: c(person('Miquel', 'Garriga', email = 'gbmiquel@gmail.com', role = 'aut'),
 	person('Stefan', 'Gerlach', email = 'stefan.gerlach@uni-konstanz.de', role = 'aut'),
 	person('Ion', 'Vasilief', email = 'ion_vasilief@yahoo.fr', role = 'aut'),
