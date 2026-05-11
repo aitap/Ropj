@@ -21,4 +21,3 @@ Depends: R (>= 3.1)
 Imports: Rcpp (>= 0.12.9)
 LinkingTo: Rcpp
 BugReports: https://codeberg.org/aitap/Ropj/issues
-SystemRequirements: C++17
