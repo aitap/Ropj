@@ -1,4 +1,4 @@
 [submodule "src/liborigin"]
 	path = src/liborigin
-	url = https://codeberg.org/aitap/liborigin
-	branch = fixes
+	url = https://github.com/gerlachs/liborigin
+	branch = master
