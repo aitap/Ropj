@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{News for package \pkg{Ropj}}
-\section{Changes in Ropj version 0.3-6.2}{\itemize{
+\section{Changes in Ropj version 0.3-7 (2026-08-22)}{\itemize{
   \item \code{liborigin} no longer fails to compile with some C++
   compilers in C++20 mode (\command{g++} 12.2.0 or \command{clang++}
   14.0.3).
