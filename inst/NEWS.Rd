@@ -1,11 +1,14 @@
 \name{NEWS}
 \title{News for package \pkg{Ropj}}
-\section{Changes in Ropj version 0.3-6.1}{\itemize{
-  \item Fixed bundled \code{liborigin} to compile with C++ \eqn{\ge} 20.
-
-  \item Fixed a bug in bundled \code{liborigin} that caused the Excel
-  sheet names to come out in the wrong order and sometimes crashed the
-  process if the window layer was completely empty.
+\section{Changes in Ropj version 0.3-6.2}{\itemize{
+  \item \code{liborigin} no longer fails to compile with some C++
+  compilers in C++20 mode (\command{g++} 12.2.0 or \command{clang++}
+  14.0.3).
+  \item The spreadsheet tab names and content now come out in the same
+  order, even if the tabs have been reordered inside Origin. A related
+  crash for empty window layers is now also prevented.
+  \item Updated bundled \code{liborigin} to \verb{3.0.4}. Thanks to
+  Stefan Gerlach!
 }}
 \section{Changes in Ropj version 0.3-6 (2025-03-14)}{\itemize{
   \item Fixed a bug preventing the code from reading file paths not in
