@@ -1,4 +1,5 @@
 R = R
+R-devel = R
 
 -include Makevars.local
 
@@ -19,7 +20,7 @@ check: $(PACKAGE)
 	$(R) CMD check $(PACKAGE)
 
 check-cran: $(PACKAGE)
-	$(R) CMD check --timings --as-cran $(PACKAGE)
+	$(R-devel) CMD check --timings --as-cran $(PACKAGE)
 
 install: $(PACKAGE)
 	$(R) CMD INSTALL $(PACKAGE)
